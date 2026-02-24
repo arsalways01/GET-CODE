@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GET CODE GENERATOR - arsalwaysss</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(ellipse at top, #0d0f1e, #030514);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Efek bintang/galaksi */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 100px 40px, #ffd700, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 200px 120px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 300px 190px, #87ceeb, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 420px 280px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 500px 340px, #ff69b4, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 620px 400px, #fff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 750px 480px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            opacity: 0.3;
+            animation: twinkle 4s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            100% { opacity: 0.5; }
+        }
+
+        /* Efek nebula */
+        .nebula {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(76, 0, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(255, 0, 128, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Container utama */
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: rgba(8, 12, 25, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(100, 150, 255, 0.15);
+            border-radius: 48px;
+            padding: 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(74, 110, 255, 0.1) inset;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header dengan judul ganda */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title-line {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #ffffff 0%, #aaccff 50%, #6e8aff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(74, 110, 255, 0.5);
+            line-height: 1.2;
+        }
+
+        .title-line:first-child {
+            margin-bottom: -10px;
+        }
+
+        .subtitle {
+            color: rgba(170, 204, 255, 0.7);
+            font-size: 1rem;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .subtitle span {
+            width: 5px;
+            height: 5px;
+            background: #6e8aff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #6e8aff;
+        }
+
+        /* Creator badge */
+        .creator {
+            display: inline-block;
+            background: rgba(74, 110, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(74, 110, 255, 0.3);
+            padding: 8px 30px;
+            border-radius: 40px;
+            color: #aaccff;
+            font-weight: 500;
+            margin-top: 15px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        /* Input URL section */
+        .input-section {
+            background: rgba(10, 15, 30, 0.3);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(74, 110, 255, 0.2);
+            border-radius: 32px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .url-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .url-input {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(5, 8, 20, 0.6);
+            border: 1px solid rgba(74, 110, 255, 0.3);
+            border-radius: 20px;
+            padding: 18px 25px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: #6e8aff;
+            background: rgba(5, 8, 20, 0.8);
+            box-shadow: 0 0 30px rgba(110, 138, 255, 0.3);
+        }
+
+        .url-input::placeholder {
+            color: rgba(170, 204, 255, 0.5);
+            font-style: italic;
+        }
+
+        .get-btn {
+            background: linear-gradient(145deg, #1e3a8a, #1e40af);
+            border: 1px solid #3b82f6;
+            color: white;
+            padding: 18px 40px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(30, 64, 175, 0.3);
+        }
+
+        .get-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(30, 64, 175, 0.5);
+            background: linear-gradient(145deg, #1e40af, #2563eb);
+        }
+
+        .cancel-btn {
+            background: linear-gradient(145deg, #4b5563, #374151);
+            border: 1px solid #9ca3af;
+            color: white;
+            padding: 18px 40px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .cancel-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(145deg, #374151, #1f2937);
+        }
+
+        .cancel-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Button group */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .mode-btn {
+            background: rgba(20, 30, 50, 0.5);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(74, 110, 255, 0.3);
+            color: #aaccff;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .mode-btn:hover {
+            background: rgba(30, 45, 75, 0.7);
+            border-color: #6e8aff;
+            color: white;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(145deg, #059669, #047857);
+            border-color: #10b981;
+            color: white;
+            box-shadow: 0 0 20px #10b981;
+        }
+
+        .mode-btn.combine-mode {
+            background: linear-gradient(145deg, #b91c1c, #991b1b);
+            border-color: #ef4444;
+            color: white;
+            box-shadow: 0 0 20px #ef4444;
+        }
+
+        .info-btn {
+            background: #6b21a8;
+            border: 1px solid #a855f7;
+            color: white;
+            width: 52px;
+            height: 52px;
+            border-radius: 52px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            box-shadow: 0 0 20px #a855f7;
+        }
+
+        .info-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: #7e22ce;
+        }
+
+        /* Overlay Info */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .overlay-content {
+            background: rgba(15, 20, 40, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid #a855f7;
+            border-radius: 40px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: white;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 0 2px #a855f7 inset;
+            transform: scale(0.9);
+            transition: all 0.4s;
+        }
+
+        .overlay.show .overlay-content {
+            transform: scale(1);
+        }
+
+        .overlay-content h2 {
+            color: #d8b4fe;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .function-list {
+            list-style: none;
+        }
+
+        .function-list li {
+            padding: 18px;
+            margin: 12px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            border-left: 4px solid;
+            transition: all 0.3s;
+        }
+
+        .function-list li:nth-child(1) { border-color: #3b82f6; }
+        .function-list li:nth-child(2) { border-color: #10b981; }
+        .function-list li:nth-child(3) { border-color: #ef4444; }
+        .function-list li:nth-child(4) { border-color: #f59e0b; }
+        .function-list li:nth-child(5) { border-color: #ec4899; }
+        .function-list li:nth-child(6) { border-color: #a855f7; }
+        .function-list li:nth-child(7) { border-color: #9ca3af; }
+
+        .function-list li:hover {
+            background: rgba(30, 40, 70, 0.5);
+            transform: translateX(10px);
+        }
+
+        .close-overlay {
+            background: #a855f7;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 25px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .close-overlay:hover {
+            background: #9333ea;
+            transform: scale(1.02);
+        }
+
+        /* Preview code area */
+        .preview-area {
+            background: rgba(5, 8, 20, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(74, 110, 255, 0.2);
+            border-radius: 32px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #aaccff;
+            font-size: 0.95rem;
+        }
+
+        .preview-stats {
+            display: flex;
+            gap: 15px;
+        }
+
+        .stat-item {
+            background: rgba(74, 110, 255, 0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(74, 110, 255, 0.3);
+        }
+
+        /* Code container */
+        .code-container {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(74, 110, 255, 0.2);
+        }
+
+        .code-tabs {
+            display: flex;
+            gap: 2px;
+            background: rgba(10, 15, 30, 0.6);
+            padding: 15px;
+            border-bottom: 1px solid rgba(74, 110, 255, 0.2);
+        }
+
+        .tab {
+            padding: 10px 25px;
+            background: rgba(20, 30, 50, 0.5);
+            border-radius: 40px;
+            color: #aaccff;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .tab:hover {
+            background: rgba(40, 60, 100, 0.7);
+            color: white;
+        }
+
+        .tab.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .code-display {
+            padding: 25px;
+            max-height: 500px;
+            overflow: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #bbf7d0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            background: rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .copy-btn {
+            background: #1e293b;
+            border: 1px solid #3b82f6;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px #2563eb;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(74, 110, 255, 0.3);
+            border-top-color: #6e8aff;
+            border-radius: 50%;
+            animation: spin 1s infinite linear;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .placeholder-text {
+            color: rgba(170, 204, 255, 0.3);
+            font-style: italic;
+            text-align: center;
+            padding: 60px;
+        }
+
+        /* Styling untuk mode gabung dengan jarak */
+        .combined-section {
+            margin-bottom: 30px;
+            border-left: 3px solid #6e8aff;
+            padding-left: 20px;
+        }
+
+        .combined-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            color: #ffd966;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::before {
+            content: '◆';
+            color: #6e8aff;
+            font-size: 0.8rem;
+        }
+
+        .combined-pre {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #bbf7d0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(74, 110, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="nebula"></div>
+
+    <div class="container">
+        <!-- Header dengan judul ganda -->
+        <div class="header">
+            <div class="title-line">GET CODE</div>
+            <div class="title-line">GENERATOR</div>
+            <div class="subtitle">
+                <span></span>
+                Mengambil kode dari galaksi...
+                <span></span>
+            </div>
+            <div class="creator">arsalwaysss</div>
+        </div>
+
+        <!-- Input URL Section -->
+        <div class="input-section">
+            <div class="url-group">
+                <input type="text" class="url-input" id="urlInput" placeholder="isi URL anda">
+                <button class="get-btn" id="getCodeBtn">
+                    <span>🚀</span> AMBIL KODE
+                </button>
+                <button class="cancel-btn" id="cancelBtn" disabled>
+                    <span>⏹️</span> BATAL
+                </button>
+            </div>
+
+            <!-- Button Group -->
+            <div class="button-group">
+                <button class="mode-btn" id="combineBtn">🟢 SEMUA</button>
+                <button class="mode-btn" id="htmlBtn">HTML</button>
+                <button class="mode-btn" id="cssBtn">CSS</button>
+                <button class="mode-btn" id="jsBtn">JS</button>
+                <button class="info-btn" id="infoBtn">!</button>
+            </div>
+        </div>
+
+        <!-- Preview Area -->
+        <div class="preview-area">
+            <div class="preview-header">
+                <span>📄 PREVIEW CODE</span>
+                <div class="preview-stats">
+                    <span class="stat-item" id="charCount">0 karakter</span>
+                </div>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="color: #aaccff;">Mengambil kode dari website...</p>
+            </div>
+
+            <!-- Code Display -->
+            <div class="code-container" id="codeContainer">
+                <div class="code-tabs" id="codeTabs" style="display: none;"></div>
+                <div class="code-display" id="codeDisplay">
+                    <div class="placeholder-text">
+                        ⚡ masukkan URL dan klik AMBIL KODE
+                    </div>
+                </div>
+                <button class="copy-btn" id="copyBtn">
+                    <span>📋</span> SALIN KODE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay Info -->
+    <div class="overlay" id="overlay">
+        <div class="overlay-content">
+            <h2>
+                <span>✨</span>
+                FUNGSI TOMBOL
+                <span>✨</span>
+            </h2>
+            <ul class="function-list">
+                <li><strong>🚀 AMBIL KODE</strong> - Mengambil kode HTML dari URL yang dimasukkan</li>
+                <li><strong>⏹️ BATAL</strong> - Membatalkan proses pengambilan kode dan menghapus tampilan kode</li>
+                <li><strong>🟢 SEMUA (Hijau)</strong> - Mode terpisah (tampil dalam 3 tab: HTML, CSS, JS)</li>
+                <li><strong>🔴 SEMUA (Merah)</strong> - Mode gabung (semua kode jadi satu dengan jarak antar bagian)</li>
+                <li><strong>📄 HTML</strong> - Menampilkan kode HTML saja</li>
+                <li><strong>🎨 CSS</strong> - Menampilkan kode CSS dari tag style</li>
+                <li><strong>⚡ JS</strong> - Menampilkan kode JavaScript dari tag script inline</li>
+            </ul>
+            <p style="color: #aaccff; margin: 25px 0; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 20px;">
+                <strong>Cara Kerja:</strong><br>
+                1. Masukkan URL di kolom "isi URL anda"<br>
+                2. Klik AMBIL KODE untuk mengambil konten<br>
+                3. Kode langsung muncul (tanpa efek mengetik)<br>
+                4. Gunakan tombol mode untuk filter tampilan<br>
+                5. Klik BATAL untuk menghapus kode dan berhenti<br>
+                6. Klik SALIN KODE untuk copy ke clipboard
+            </p>
+            <button class="close-overlay" id="closeOverlay">TUTUP</button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const urlInput = document.getElementById('urlInput');
+        const getCodeBtn = document.getElementById('getCodeBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const combineBtn = document.getElementById('combineBtn');
+        const htmlBtn = document.getElementById('htmlBtn');
+        const cssBtn = document.getElementById('cssBtn');
+        const jsBtn = document.getElementById('jsBtn');
+        const infoBtn = document.getElementById('infoBtn');
+        const overlay = document.getElementById('overlay');
+        const closeOverlay = document.getElementById('closeOverlay');
+        const loading = document.getElementById('loading');
+        const codeTabs = document.getElementById('codeTabs');
+        const codeDisplay = document.getElementById('codeDisplay');
+        const copyBtn = document.getElementById('copyBtn');
+        const charCount = document.getElementById('charCount');
+
+        // State
+        let currentMode = 'combine';
+        let isCombineMode = false;
+        let currentCode = {
+            full: '',
+            html: '',
+            css: '',
+            js: ''
+        };
+        let activeTab = 'html';
+        let abortController = null;
+
+        // Info button
+        infoBtn.addEventListener('click', () => {
+            overlay.classList.add('show');
+        });
+
+        closeOverlay.addEventListener('click', () => {
+            overlay.classList.remove('show');
+        });
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.classList.remove('show');
+            }
+        });
+
+        // Cancel button
+        cancelBtn.addEventListener('click', () => {
+            if (abortController) {
+                abortController.abort();
+                abortController = null;
+            }
+            
+            // Reset tampilan
+            loading.classList.remove('show');
+            codeDisplay.innerHTML = `<div class="placeholder-text">⚡ masukkan URL dan klik AMBIL KODE</div>`;
+            codeTabs.style.display = 'none';
+            charCount.textContent = '0 karakter';
+            currentCode = { full: '', html: '', css: '', js: '' };
+            cancelBtn.disabled = true;
+        });
+
+        // Combine button toggle
+        combineBtn.addEventListener('click', () => {
+            isCombineMode = !isCombineMode;
+            if (isCombineMode) {
+                combineBtn.classList.add('combine-mode');
+                combineBtn.classList.remove('active');
+                combineBtn.innerHTML = '🔴 SEMUA';
+            } else {
+                combineBtn.classList.remove('combine-mode');
+                combineBtn.classList.add('active');
+                combineBtn.innerHTML = '🟢 SEMUA';
+            }
+            currentMode = 'combine';
+            updateActiveButton(combineBtn);
+            updateDisplay();
+        });
+
+        // HTML button
+        htmlBtn.addEventListener('click', () => {
+            currentMode = 'html';
+            updateActiveButton(htmlBtn);
+            updateDisplay();
+        });
+
+        // CSS button
+        cssBtn.addEventListener('click', () => {
+            currentMode = 'css';
+            updateActiveButton(cssBtn);
+            updateDisplay();
+        });
+
+        // JS button
+        jsBtn.addEventListener('click', () => {
+            currentMode = 'js';
+            updateActiveButton(jsBtn);
+            updateDisplay();
+        });
+
+        // Update active button
+        function updateActiveButton(activeBtn) {
+            [combineBtn, htmlBtn, cssBtn, jsBtn].forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (currentMode === 'combine') {
+                if (!isCombineMode) {
+                    combineBtn.classList.add('active');
+                }
+            } else {
+                activeBtn.classList.add('active');
+            }
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            return text.replace(/&/g, '&amp;')
+                      .replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;')
+                      .replace(/"/g, '&quot;')
+                      .replace(/'/g, '&#039;');
+        }
+
+        // Get code from URL
+        getCodeBtn.addEventListener('click', async () => {
+            const url = urlInput.value.trim();
+            
+            if (!url) {
+                alert('Masukkan URL terlebih dahulu!');
+                return;
+            }
+
+            try {
+                new URL(url);
+            } catch {
+                alert('URL tidak valid! Gunakan format: https://contoh.com');
+                return;
+            }
+
+            // Cancel previous request
+            if (abortController) {
+                abortController.abort();
+            }
+            
+            abortController = new AbortController();
+            
+            // Tampilkan loading
+            loading.classList.add('show');
+            codeDisplay.innerHTML = '';
+            cancelBtn.disabled = false;
+
+            try {
+                const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`, {
+                    signal: abortController.signal
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Gagal mengambil halaman');
+                }
+
+                const data = await response.json();
+                const htmlContent = data.contents;
+
+                // Parse HTML
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlContent, 'text/html');
+
+                // Ambil HTML
+                const html = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+
+                // Ambil CSS dari tag style
+                const styles = doc.querySelectorAll('style');
+                let css = '';
+                styles.forEach((style, index) => {
+                    css += `<!-- CSS ${index + 1} -->\n${style.outerHTML}\n\n`;
+                });
+                if (!css) css = '<!-- Tidak ada CSS inline -->';
+
+                // Ambil JavaScript dari tag script
+                const scripts = doc.querySelectorAll('script:not([src])');
+                let js = '';
+                scripts.forEach((script, index) => {
+                    js += `<!-- JavaScript ${index + 1} -->\n${script.outerHTML}\n\n`;
+                });
+                if (!js) js = '<!-- Tidak ada JavaScript inline -->';
+
+                // Simpan kode
+                currentCode = {
+                    full: htmlContent,
+                    html: html,
+                    css: css,
+                    js: js
+                };
+
+                // Update display (langsung muncul tanpa efek mengetik)
+                updateDisplay();
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    codeDisplay.innerHTML = `<div class="placeholder-text">⏹️ Proses dibatalkan</div>`;
+                } else {
+                    codeDisplay.innerHTML = `<div style="color: #ef4444; padding: 30px; text-align: center;">
+                        ❌ Error: ${error.message}
+                    </div>`;
+                }
+            } finally {
+                loading.classList.remove('show');
+                cancelBtn.disabled = true;
+                abortController = null;
+            }
+        });
+
+        // Update display berdasarkan mode
+        function updateDisplay() {
+            if (!currentCode.full) return;
+
+            if (currentMode === 'combine' && !isCombineMode) {
+                // Mode combine terpisah - tampilkan tabs
+                codeTabs.innerHTML = `
+                    <div class="tab ${activeTab === 'html' ? 'active' : ''}" onclick="changeTab('html')">HTML</div>
+                    <div class="tab ${activeTab === 'css' ? 'active' : ''}" onclick="changeTab('css')">CSS</div>
+                    <div class="tab ${activeTab === 'js' ? 'active' : ''}" onclick="changeTab('js')">JS</div>
+                `;
+                codeTabs.style.display = 'flex';
+                
+                // Tampilkan konten tab aktif
+                const content = currentCode[activeTab];
+                codeDisplay.innerHTML = `<pre style="font-family: 'Courier New'; margin: 0;">${escapeHtml(content)}</pre>`;
+                charCount.textContent = content.length + ' karakter';
+                
+            } else if (currentMode === 'combine' && isCombineMode) {
+                // Mode combine jadi satu dengan jarak
+                codeTabs.style.display = 'none';
+                
+                const combinedHtml = `
+                    <div class="combined-section">
+                        <div class="section-title">📄 HTML</div>
+                        <pre class="combined-pre">${escapeHtml(currentCode.html)}</pre>
+                    </div>
+                    <div class="combined-section">
+                        <div class="section-title">🎨 CSS</div>
+                        <pre class="combined-pre">${escapeHtml(currentCode.css)}</pre>
+                    </div>
+                    <div class="combined-section">
+                        <div class="section-title">⚡ JAVASCRIPT</div>
+                        <pre class="combined-pre">${escapeHtml(currentCode.js)}</pre>
+                    </div>
+                `;
+                
+                codeDisplay.innerHTML = combinedHtml;
+                const totalLength = currentCode.html.length + currentCode.css.length + currentCode.js.length;
+                charCount.textContent = totalLength + ' karakter';
+                
+            } else {
+                // Mode single
+                codeTabs.style.display = 'none';
+                let content = '';
+                if (currentMode === 'html') content = currentCode.html;
+                else if (currentMode === 'css') content = currentCode.css;
+                else if (currentMode === 'js') content = currentCode.js;
+                
+                codeDisplay.innerHTML = `<pre style="font-family: 'Courier New'; margin: 0;">${escapeHtml(content)}</pre>`;
+                charCount.textContent = content.length + ' karakter';
+            }
+        }
+
+        // Fungsi untuk ganti tab
+        window.changeTab = function(tab) {
+            activeTab = tab;
+            if (currentMode === 'combine' && !isCombineMode) {
+                const content = currentCode[activeTab];
+                codeDisplay.innerHTML = `<pre style="font-family: 'Courier New'; margin: 0;">${escapeHtml(content)}</pre>`;
+                charCount.textContent = content.length + ' karakter';
+                
+                // Update active tab
+                const tabs = codeTabs.children;
+                for (let i = 0; i < tabs.length; i++) {
+                    if (tabs[i].textContent.toLowerCase() === tab) {
+                        tabs[i].classList.add('active');
+                    } else {
+                        tabs[i].classList.remove('active');
+                    }
+                }
+            }
+        };
+
+        // Copy button
+        copyBtn.addEventListener('click', () => {
+            let textToCopy = '';
+            
+            if (currentMode === 'combine' && isCombineMode) {
+                textToCopy = `==================== HTML ====================\n${currentCode.html}\n\n==================== CSS =====================\n${currentCode.css}\n\n==================== JAVASCRIPT ==============\n${currentCode.js}`;
+            } else if (currentMode === 'combine' && !isCombineMode) {
+                textToCopy = currentCode[activeTab];
+            } else {
+                if (currentMode === 'html') textToCopy = currentCode.html;
+                else if (currentMode === 'css') textToCopy = currentCode.css;
+                else if (currentMode === 'js') textToCopy = currentCode.js;
+            }
+            
+            if (!textToCopy) {
+                alert('Tidak ada kode untuk disalin!');
+                return;
+            }
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<span>✅</span> TERSALIN!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                }, 2000);
+            }).catch(() => {
+                alert('Gagal menyalin kode');
+            });
+        });
+
+        // Set default
+        urlInput.placeholder = 'isi URL anda';
+        urlInput.value = '';
+        combineBtn.classList.add('active');
+        combineBtn.innerHTML = '🟢 SEMUA';
+    </script>
+</body>
+</html>
